@@ -19,3 +19,22 @@ The beauty comes now. For Alice to send a message `M` (which we assume is alread
 the pair `(n, e)`. She then computes `C = M ^ e mod n`, and sends `C` to Bob. Notice that nobody knows what `C` means, it is just 
 apparent gibberish in the eyes of somebody who is snooping over the network. However, once Bob receives `C`, he can find out what it means. First notice that since `e * d = 1 mod phi` then `phi * k + 1 = e * d` for some `k`. We use this along Euler's theorem that states that for any `a` prime to `n`, `a ^ phi(n) = 1 mod n`, where `phi` is Euler's function. With all of this, Bob does the following:
 `C ^ d = M ^ (ed) = M ^ (phi * k + 1) = M ^ (phi * k) * M = 1 * M = M mod n`, and he finally has `M`.
+
+
+## API
+
+The API is pretty simple, and an example will suffice to show how it works:
+
+```python
+import keygen as k
+import rsa
+size = 7
+pub, priv = k.keygen(size)
+msg = 1928
+cipher = rsa.encrypt(msg, pub) # Send this over the network!
+deciphered = rsa.decrypt(cipher, priv)
+
+print deciphered == msg
+# Prints True
+
+```
